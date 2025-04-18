@@ -83,21 +83,26 @@ cp .env.example .env.local
 
 ```bash
 # npmスクリプトを使用する場合
-npm start -- [--format FORMAT] <検索タイプ> <検索キー> [オプション]
+npm start -- [--format FORMAT] --type TYPE <検索キー> [--options OPTIONS]
 
 # 直接実行する場合
-node dist/index.js [--format FORMAT] <検索タイプ> <検索キー> [オプション]
+node dist/index.js [--format FORMAT] --type TYPE <検索キー> [--options OPTIONS]
+
+# ヘルプを表示
+npm start -- --help
 ```
 
 ### パラメータ
 
-- `[--format FORMAT]`: 出力形式を指定（省略可能）
+- `[--format FORMAT]`: 出力形式を指定（省略可能、デフォルト: xml）
   - `csv-sjis`: CSV形式/Shift-JIS
   - `csv`: CSV形式/UTF-8
-  - `xml`: XML形式/UTF-8（デフォルト）
-- `<検索タイプ>`: `number`（法人番号検索）または `name`（法人名検索）
+  - `xml`: XML形式/UTF-8
+- `--type TYPE`: 検索タイプを指定（必須）
+  - `number`: 法人番号検索
+  - `name`: 法人名検索
 - `<検索キー>`: 検索したい法人番号または法人名
-- `[オプション]`: オプション設定をJSON形式で指定（省略可能）
+- `[--options OPTIONS]`: オプション設定をJSON形式で指定（省略可能、デフォルト: {}）
 
 ### 例
 
@@ -105,29 +110,29 @@ node dist/index.js [--format FORMAT] <検索タイプ> <検索キー> [オプシ
 
 ```bash
 # 基本的な法人番号検索
-npm start -- number 1234567890123
+npm start -- --type number 1234567890123
 
 # 変更履歴を含めて検索
-npm start -- number 1234567890123 '{"history":"1"}'
+npm start -- --type number 1234567890123 --options '{"history":"1"}'
 
 # CSV/UTF-8形式で出力
-npm start -- --format csv number 1234567890123
+npm start -- --format csv --type number 1234567890123
 
 # CSV/Shift-JIS形式で出力
-npm start -- --format csv-sjis number 1234567890123
+npm start -- --format csv-sjis --type number 1234567890123
 ```
 
 #### 法人名で検索
 
 ```bash
 # 基本的な法人名検索
-npm start -- name 国税商事
+npm start -- --type name 国税商事
 
 # オプション付きの法人名検索
-npm start -- name 国税商事 '{"mode":"2","target":"1","change":"1"}'
+npm start -- --type name 国税商事 --options '{"mode":"2","target":"1","change":"1"}'
 
 # XML形式での指定（デフォルトと同じ）
-npm start -- --format xml name 国税商事
+npm start -- --format xml --type name 国税商事
 ```
 
 ### 検索オプション
