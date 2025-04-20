@@ -1,10 +1,19 @@
 import axios from 'axios';
 import { CompanyInfoClient } from '../api-client';
-import { ApiConfig, ResponseType, SearchMode, SearchTarget } from '../types';
+import { ApiConfig, ResponseType, SearchMode, SearchTarget, ApiType } from '../types';
 
 // axiosをモック化
 jest.mock('axios');
 const mockedAxios = axios as jest.Mocked<typeof axios>;
+
+// console.errorをモック化（標準エラー出力のテスト用）
+const originalConsoleError = console.error;
+beforeAll(() => {
+  console.error = jest.fn();
+});
+afterAll(() => {
+  console.error = originalConsoleError;
+});
 
 describe('CompanyInfoClient', () => {
   let client: CompanyInfoClient;
@@ -16,13 +25,15 @@ describe('CompanyInfoClient', () => {
       applicationId: 'test-application-id',
       version: '4',
       responseType: ResponseType.XML_UNICODE,
-      baseUrl: 'https://api.houjin-bangou.nta.go.jp'
+      baseUrl: 'https://api.houjin-bangou.nta.go.jp',
+      apiType: ApiType.MOF
     };
     
     client = new CompanyInfoClient(config);
     
     // モックのリセット
     jest.clearAllMocks();
+    jest.resetAllMocks();
   });
 
   describe('searchByNumber', () => {

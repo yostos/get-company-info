@@ -7,12 +7,21 @@ export enum SearchType {
 }
 
 /**
+ * API種別の列挙型
+ */
+export enum ApiType {
+  MOF = "mof",  // 財務省API
+  METI = "meti" // 経済産業省API
+}
+
+/**
  * 応答形式の列挙型
  */
 export enum ResponseType {
   CSV_SHIFT_JIS = "01",
   CSV_UNICODE = "02",
   XML_UNICODE = "12",
+  JSON = "json"
 }
 
 /**
@@ -117,6 +126,16 @@ export interface NameSearchOptions {
 }
 
 /**
+ * 経済産業省APIオプションのインターフェース（法人番号検索用）
+ */
+export interface MetiNumberSearchOptions {
+  /**
+   * 詳細情報を含めるかどうか
+   */
+  detail?: boolean;
+}
+
+/**
  * APIリクエストのための設定インターフェース
  */
 export interface ApiConfig {
@@ -124,5 +143,6 @@ export interface ApiConfig {
   version: string;
   responseType: ResponseType;
   baseUrl: string;
+  apiType: ApiType;
 }
 
